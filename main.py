@@ -16,4 +16,5 @@ print('Имя: %s, E-mail: %s, Возраст: %d' % (name, email, age))
 print('Имя: {}, E-mail: {}, Возраст: {}' .format (name, email, age))
 
 #3 способ есть только с версии python 3.6
-print(f'Имя: {name}, E-mail: {email}, Возраст: {age}, Вес: {weight:.2f}') #2f-количество знаков после запятой
+print(f'Имя: {name}, E-mail: {email}, Возраст: {age}, Вес: {weight:.2f}')
+#2f-количество знаков после запятой
