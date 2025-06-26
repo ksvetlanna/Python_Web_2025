@@ -7,6 +7,8 @@ while word !='':
 print('Пустая строка введена')'''
 
 # c использованием :=
-while len(word := input('Введите слово : ')) != '':
+word= input('Введите слово: ')
+while word  != '':
     print(f'Слово: "{word}" ')
+    word = input('Введите слово: ')
 print('Пустая строка введена')
