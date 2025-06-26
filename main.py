@@ -1,6 +1,4 @@
-counter = 1
-
- while counter <= 100:
-     if counter % 10 == 3:
-         print(counter, end=',')
-     counter += 1
+# ключевое слово in
+word='поток'
+if 'ток' in word:
+    print('Есть')
