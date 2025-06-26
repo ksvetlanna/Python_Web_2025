@@ -1,4 +1,2 @@
-# ключевое слово in
-word='поток'
-if 'ток' in word:
-    print('Есть')
+for i in range(5,96,5):
+    print(i)
