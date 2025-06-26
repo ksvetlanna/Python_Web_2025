@@ -1,8 +1,6 @@
-# Factorial
-N = 5
-fact = 1
+# Вложенные циклы
 
-
-for i in range(1, N+1):
-    fact *= 1
-print(fact)
+for i in range(1, 11):
+    for j in range(1, 11):
+        print(f'{i}*{j}={i*j}', end='\t')
+    print()
