@@ -1,25 +1,22 @@
-# таблица символов
-'''s = '\xB0'
-u = '\u2603' # 16ричный код
+'''phrase=('Язык Python')
 
-# две удобные функции
-# ord(символ) - возвращает код символа в Unicode
-# chr(код) - возвращает символ по Unicode-коду
-print(u)
-print('25' + s +'C')
-print(f'Код снеговика в Unicode: {ord('☃')}')
-print(chr(176))'''
+print(phrase.lower()) #все буквы маленькие
+print(phrase.upper()) #все буквы большие
+print(phrase.capitalize()) #только первая буква заглавная
+print(phrase.title()) #все слова с заглавной буквы
 
-# задание: вывести слово "привет" в виде кодов для каждой буквы
-s = set()
-word = input('введите фразу для зашифровки: ')
-# Зашифровываем
-for i in word:
-    s.add(ord(i))
-print(s)
+print('Ура! '*3) #размножит фразу столько раз на сколько умножим
+print('Телевизор'.count('е')) # посчитать сколько раз буква е присутствует в слове Телевизор
+print('Python'.index('h')) #по символу h определяем какую позицию (index)'''
 
-#расшифровываем
+
+'''word = 'статор'
 res = ''
-for i in s:
-    res += chr(i)
-print(res)
+for ch in word:
+    i = word.index(ch)+1
+    print(ch*i, end='')'''
+
+word = 'статор'
+res = ''
+for i in range(1,len(word)+1):
+    print(word[i-1]*i, end='')
