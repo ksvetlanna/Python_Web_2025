@@ -1,15 +1,19 @@
 # Списки (list)
-s = {'3','4','5'}
-l1 = list(s)
-l2 = list(range(1,11))
-print(l1)
-print(l2)
-
-
-lst = [] # пустой список
-lst = list('Pythone')
-lst2=[1,2,3]*3 # список повторится 3 раза
+# lst =[] пустой список
+#1 пример
+s='Собака'
+lst =list(s)
+lst[1] = 'о'
 print(lst)
-print(lst2)
 
- #'append', 'clear', 'copy', 'count', 'extend', 'index', 'insert', 'pop', 'remove', 'reverse', 'sort' действия со списками
+#2 пример
+f= []
+for i in range(11):
+    f.append(i)
+print(f)
+
+#3 пример
+s1 = [1,2,3]
+s2 = [4,5,6]
+ss = s1 + s2  # с помощью + можно канкатинировать и списки
+print(ss)
