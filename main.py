@@ -1,19 +1,14 @@
-# Списки (list)
-# lst =[] пустой список
-#1 пример
-s='Собака'
-lst =list(s)
-lst[1] = 'о'
-print(lst)
+# 1пример
+lst = list(range(10))
+for item in lst:
+    print(item, '-', item **2)
 
-#2 пример
-f= []
-for i in range(11):
-    f.append(i)
-print(f)
 
-#3 пример
-s1 = [1,2,3]
-s2 = [4,5,6]
-ss = s1 + s2  # с помощью + можно канкатинировать и списки
-print(ss)
+
+
+# 2пример
+lst = list(range(10))
+slice = lst[1:len(lst):2]
+print(slice)
+for item in range(0,len(lst),1):
+    print(lst[item], '-', lst[item] **2)
