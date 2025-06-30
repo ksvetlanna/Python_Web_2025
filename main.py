@@ -1,31 +1,10 @@
-# троки (immutable, iterable)
-# Шифр Цезаря
+# НАЧАЛО И ОКОНЧАНИЕ СТРОКИ
+# startswith и endswith
 
-# создаем алфавит
-alphabet = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
+s = 'смотреть'
 
-# получаем входные данные
-message = input('Введите строку: ').strip().lower()
-key = int(input('Введите шаг для шифровки: '))
+if s.lower.().startswith('смо'):
+    print('да')
 
-# Инициализируем пустую строку для результата
-encrypted =''
-
-# перебираем каждый символ в сообщении
-for letter in message:
-    # проверяем, является ли символ буквой из алфавита
-    if letter in alphabet:
-        # находим позицию буквы в алфавите
-        t=alphabet.index(letter)
-        # вычисляем новую позицию с учетом сдвига
-        new_key = (t+key) % len(alphabet)
-        # добавляем зашифрованный символ
-        encrypted += alphabet[new_key]
-    else:
-
-        # если символ нек буква, оставляем его без изменений
-        encrypted += letter
-# для расшифровки достаточно изменить формулу вычисления позиции
-# new_key = (t - key) % len(alphabet)
-
-print('Зашифрованное сообщение: ',encrypted)
+if s.endswith('еть'):
+    print('да')
