@@ -1,8 +1,12 @@
+#Задача
 lst = [] # пустой список
-while (item := input('Ингредиент:')) !='':
+while (item := input('Ингредиент:')) !='': # вводим ингредиенты
     lst.append(item)
 
-print(f'У нас есть {len(lst)} ингредиентов: ')
+temp = set(lst) # удаляем повторяющиеся ингридиенты
+lst = list(temp)
+
+print(f'У нас есть {len(lst)} ингредиентов: ') # подсчитываем и сортируем
 lst.sort()
 
 for i in range(len(lst)):
