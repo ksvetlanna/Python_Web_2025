@@ -1,11 +1,15 @@
-# НАЧАЛО И ОКОНЧАНИЕ СТРОКИ
-# Срез (у строки и у других коллекций, кроме set)
-# [начало: окончание: шаг] начало включительно, окончание не включительно
-s = ('Дорог Рим')
-# Задание вывести "Город Миргород"
+# Списки (list)
+s = {'3','4','5'}
+l1 = list(s)
+l2 = list(range(1,11))
+print(l1)
+print(l2)
 
-temp= s.lower()
-city = temp[:5][::-1]
-res = city + ' '+ temp[6:][::-1]+city
 
-print(res.title())
+lst = [] # пустой список
+lst = list('Pythone')
+lst2=[1,2,3]*3 # список повторится 3 раза
+print(lst)
+print(lst2)
+
+ #'append', 'clear', 'copy', 'count', 'extend', 'index', 'insert', 'pop', 'remove', 'reverse', 'sort' действия со списками
