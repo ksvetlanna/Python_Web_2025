@@ -1,9 +1,9 @@
-# удаление
-# 1пример
-a = ['a','b','c']
-b = a.copy()   # или  a[:] полный срез от а записать в b
-b.append('d')
-print(id(a))
-print(id(b))
-print(a)
-print(b)
+lst = [] # пустой список
+while (item := input('Ингредиент:')) !='':
+    lst.append(item)
+
+print(f'У нас есть {len(lst)} ингредиентов: ')
+lst.sort()
+
+for i in range(len(lst)):
+    print(f'\t{i + 1}. {lst[i]}')
