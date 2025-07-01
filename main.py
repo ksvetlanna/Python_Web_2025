@@ -1,12 +1,23 @@
-# ДЗ
-# Фраз: ну, я типо, вообще- короче, не понимаю этот язык!
-# 2) способ
-commas = (',','!','.','-','?')
-stop_words = {'ну','типо','короче','не'}
-message = input('Введите сообщение: ')
-for z in commas:
-    message = message.replace(z, '')
-lst = message.split() # все слова
-res = sorted(set(lst) - stop_words)
-for a,b in enumerate(res, 1):
-    print(f'{a}. {b}')
+# Списочные выражения (list comprehension)
+# 1) Вариант
+# squares =[]
+# for i in range(10):
+#     squares.append(i ** 2)
+# print(*squares, sep=', ')
+
+# 2) Вариант
+# squares = [i ** 2 for i in range(10)] # список квадратов чисел
+
+# список квадратов четных чисел
+squares = [i ** 2 for i in range(10) if i % 2 == 0] # список квадратов чисел, но только четные числа
+#          1ая    2ая часть          3яя часть
+
+print(*squares, sep=', ')
+
+#  произведение i и j
+print([i * j for i in range(3) for j in range(3)])
+
+# для расшифровки формулы выше
+# for i in range(3):
+#    for i in range(3):
+#        print( i * j)
