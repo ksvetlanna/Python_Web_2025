@@ -1,23 +1,11 @@
 # Списочные выражения (list comprehension)
-# 1) Вариант
-# squares =[]
-# for i in range(10):
-#     squares.append(i ** 2)
-# print(*squares, sep=', ')
+n = '500 600 700 800'
+# a = [int(i) for i in n.split()] так же можно присвоить в переменную для дальнейшей работы
+print([int(i) for i in n.split()])
 
-# 2) Вариант
-# squares = [i ** 2 for i in range(10)] # список квадратов чисел
 
-# список квадратов четных чисел
-squares = [i ** 2 for i in range(10) if i % 2 == 0] # список квадратов чисел, но только четные числа
-#          1ая    2ая часть          3яя часть
 
-print(*squares, sep=', ')
-
-#  произведение i и j
-print([i * j for i in range(3) for j in range(3)])
-
-# для расшифровки формулы выше
-# for i in range(3):
-#    for i in range(3):
-#        print( i * j)
+n = '100 200 300 400 500 600 700 800 900'
+approved = [500, 800]
+a = [int(i) for i in n.split() if int(i) in approved]
+print(a)
