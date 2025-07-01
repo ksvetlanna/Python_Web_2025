@@ -1,31 +1,43 @@
-# Вложенные списки
-# Задание: заполнить список программно
-# 1) вариант
-N = 3
-matrix=[[1]*N for _ in range(N)] # вместо 1 можно указать любое число
-print(matrix)
+# Словари
+# Пустой словарь
 
-count = 1
-for row in range(len(matrix)): # 3 в range это кол-во строкAdd commentMore actions
-    for col in range(len(matrix[row])):
-        matrix[row][col] = count
-        count +=1
-print(matrix)
+# 1)способ
+# d = {}
 
+# 2)способ
+# d = dict()
+# Предзаполненный словарь. Слева - ключ, справа -значение, два одинаковых ключа нельзя использовать!
+d = {
+    'table': ['таблица','стол'],
+    'well': ['хорошо','колодец'],
+    'chair': 'стул',
+    'apple': 'яблоко',
+}
+d['well'].append('скважина') # добавили элемент в список well
+print(d['well'][1]) # выводит первое значение из списка когда указываешь [1]
+d['plum'] = 'слива' # добавляем элемент в словарь он будет только пока работает программа
+print(d['plum'])
+del d['well'][0]# удаление по ключу
 
-# 2) вариант
-matrix = []
-start = 1
-N = 4
+deleted_item = d.pop('apple') # удалит элемент по ключу и вернет его
+print(deleted_item)
 
-for i in range(N):
-    table = []
-    for j in range(start, start + N):
-        table.append(j)
-    matrix.append(list(table))
-    start += N
-print(matrix)
+print('Есть ли стул в словаре')
+if 'стул' in d.values():
+    print('Да, есть')
 
-# 3) вариант
-matrix=[[i+j for j in range(N)] for i in range(1,10,3)]
-print(matrix)
+# Перебор по умолчанию
+#print(d) # словарь целиком как есть
+for key in d:
+    print(key,'->', d[key])
+
+# перебор всех значений
+for valuue in d.values():
+    print('Значения: ', valuue)
+
+print(list(d.keys())) # вывод всех ключей в виде списка
+print(d.values()) # выводит все значения всех ключей
+print(d.items()) # список всех данных в виде пар (кортежей)
+''' методы словаря
+    [clear', 'copy', 'fromkeys', 'get', 'items', 'keys', 'pop', 'popitem', 'setdefault', 'update', 'values]'''
+
