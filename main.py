@@ -1,8 +1,37 @@
-# return vs yield
+# Оператор is. если пишем a is b true будет только тогда, когда a и b один и тот же объект
+#словари как и множества со списками изменяемые объекты
+#Пример 1 создаем новый объект
+a = 1
+print(id(a))
+a += 1
+print(id(a)) # создан объект с новым содержимым
 
-def generate_list():
-    for i in range(5):               # return завершает функцию
-        yield i                      # в данном случае yield это генерация, не завершает цикл
+#Пример 2 тут объект один и тот же
+b = [0]
+print(id(b))
+b[0] += 1
+print(id(b)) # создан объект с новым содержимым
 
-array = tuple(generate_list())        # нужно обязательно преобразовать либо в list - список, либо tuple - кортеж
-print(array)
+c ={'a': 1}
+print(id(c))
+c['a'] += 1
+print(id(c))
+
+
+'''def print_goodbye(arg:):
+    print('goodbye', end=' ')
+
+def print_cruel(arg:):
+    print('cruel', end=' ')
+
+def print_world(arg:):
+    print('world', end=' ')
+
+
+def main():
+a = print_goodbye(1)
+b = print_cruel(2)
+c = print_world(3)
+
+
+main()'''
