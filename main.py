@@ -1,13 +1,18 @@
-# Возврат нескольких значений из функции
-# при распаковке * может быть только одна (у одного аргумента)
-# пример 1
+# Функция, с переменным числом аргументов
+# когда во входном параметре указана * то выведет кортеж
+def multy(first, *args): # first позиционный аргумент, *args- переменное кол-во элементов
+    #print(len(args)) # подсчет числа аргументов
+    #print(args) # по индексу, либо перебором в цикле
+    if not args:
+        return first
+    result = first
+    for arg in args:
+        result *= arg
+    return result
 
-def coordinates() -> tuple:
-    return 5.4, 3.2
-x,y, *z = coordinates() # распаковка, если заранее не знаем сколько в списке элементов то выводим *
-print(f'x ={x}, y = {y}, z ={z}')
 
+def fio(name, surname):
+    return f'{name} {surname}'
 
-# пример 2
-*names, surname = 'Остап Сулейман Бендер'.split()
-print(names, surname)
+print(fio(name='Остап', surname='Бендер'))
+print(multy(2,3,4,5))
