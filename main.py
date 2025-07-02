@@ -1,15 +1,8 @@
-# Области видимости
-def greet(name):
-    print('Привет', name)
-    name = 'друг'
-    print('Здравствуй,', name)
+# return vs yield
 
-greet('Петр')
+def generate_list():
+    for i in range(5):               # return завершает функцию
+        yield i                      # в данном случае yield это генерация, не завершает цикл
 
-
-def main():
-    area = 'Дворцовая площадь'
-    print('Давай встретимся, где', area)
-    sq
-
-main() # вызывает ВСЕ функции
+array = tuple(generate_list())        # нужно обязательно преобразовать либо в list - список, либо tuple - кортеж
+print(array)
