@@ -1,11 +1,23 @@
 # Функция, с переменным числом аргументов
-def sandwich(type_of_meal, with_onion=False, with_tomato=False):
-    print('Булочка')
-    if with_onion:
-        print('Лук')
-    print(type_of_meal)
-    if with_tomato:
-        print('Помидоры')
-    print('Булочка')
+#def print_any(*args, **kwargs):
+#    for i in args:
+#        print(i)
+#    for k,v in kwargs.items():
+#        print(k, '=', v)
 
-sandwich('Котлета', with_onion=True)
+
+def profile(name, surname, city, *children, **additional):
+    print(f'Имя: {name}')
+    print(f'Фамилия: {surname}')
+    print(f'Из города: {city}')
+    if len(children)>0:
+        print('Дети:', ', '.join(children))
+    if 'hobbie' in additional:
+        print('Хобби:', ', '.join(additional['hobbie']))
+    print(additional)
+
+
+
+profile('Дмитрий', 'Колесов', 'Волгоград',
+'Мария', 'Пётр', hobbie=['Филателия','Шахматы'])
+#print_any('Дмитрий','Колесов', city='Москва', age=27)
