@@ -1,35 +1,20 @@
-# Критерий - вхождение подстроки
-# в частности 'aн'
-# Решение 1
-#def string_contains(s):
-#    return 'ан' in s
-#fruits = ['арбуз', 'ананас', 'банан', 'ежевика', 'малина']
-
-#res = list(filter(string_contains,fruits))
-#print(res)
-
 # Анонимные функции (однострочники, безымянные)
 # lambda - функции
 # lambda <аргументы>: <выражение>
-# выше пример полной функции
-# Решение 2
-string_contains = lambda s: 'ан' in s
 
-fruits = ['арбуз', 'ананас', 'банан', 'ежевика', 'малина']
-
-res = list(filter(string_contains,fruits))
-print(res)
-
+# сформировать список английского алфавита
+english_abc = set([chr(ch) for ch in range(ord('a'), ord('z') +1)])
+#print(english_abc)
 #----------------------------------------------------------------------------------------------------
-# Решение 1
-# в одну строку вывести список квадратов чисел от 3 до 15
-#print(list(map(lambda x: x ** 2, range(3,16))))
-# Решение 2
-# еще один вариант решения
-print( [x **2 for x in range(3,16)])
 
-#----------------------------------------------------------------------------------------------------
-words = ['В', 'этом', 'списке', 'останутся', 'слова',
-         'длина', 'которых', 'больше', 'шести']
-long_words = [word for word in words if len(word)>6]
-print(long_words)
+# сформировать список русского алфавита
+russian_abc = set([chr(ch) for ch in range(ord('а'), ord('я') +1)]+['ё'])
+#print(russian_abc)
+
+# ^ только уникальные элементы множеств english_abc и russian_abc
+ABC = english_abc ^ russian_abc
+print(ABC)
+
+text = 'Однажды, теперерь.'.lower()
+text = ''. join(filter(lambda x: x in ABC ^ {' '}, text))
+print(text)
