@@ -1,37 +1,35 @@
-# Функция, как объект
-# Передаётся в другие функции: функции высшего порядка
+# Критерий - вхождение подстроки
+# в частности 'aн'
+# Решение 1
+#def string_contains(s):
+#    return 'ан' in s
+#fruits = ['арбуз', 'ананас', 'банан', 'ежевика', 'малина']
 
-# Функция критерия отбора элементов списка
-# Критерий: длина слова
-def is_longer_six(word):
-    return len(word) > 6
+#res = list(filter(string_contains,fruits))
+#print(res)
 
-
-# Критерий - первая буква
-def is_first_letter_a(word):
-    return word[0] == 'а'
-
-
-def square(num):
-    return num ** 2
-
-
-nums = [1, 2, 3, 4, 5, 6, 7, 8, 9] # 123456789
-squares = map(square, nums)
-print(list(squares))
-
-
-
-words = ['В', 'этом', 'списке', 'останутся', 'слова',
-         'длина', 'которых', 'больше', 'шести']
+# Анонимные функции (однострочники, безымянные)
+# lambda - функции
+# lambda <аргументы>: <выражение>
+# выше пример полной функции
+# Решение 2
+string_contains = lambda s: 'ан' in s
 
 fruits = ['арбуз', 'ананас', 'банан', 'ежевика', 'малина']
 
-result = list(filter(is_longer_six, words))
-print(result)
-
-res = list(filter(is_first_letter_a, fruits))
+res = list(filter(string_contains,fruits))
 print(res)
 
-for word in filter(is_longer_six, words):
-    print(word)
+#----------------------------------------------------------------------------------------------------
+# Решение 1
+# в одну строку вывести список квадратов чисел от 3 до 15
+#print(list(map(lambda x: x ** 2, range(3,16))))
+# Решение 2
+# еще один вариант решения
+print( [x **2 for x in range(3,16)])
+
+#----------------------------------------------------------------------------------------------------
+words = ['В', 'этом', 'списке', 'останутся', 'слова',
+         'длина', 'которых', 'больше', 'шести']
+long_words = [word for word in words if len(word)>6]
+print(long_words)
