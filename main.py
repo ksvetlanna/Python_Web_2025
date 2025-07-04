@@ -1,19 +1,18 @@
 # Встроенные библиотеки
 # PyPI - Python Package Index (pypi.org)
-
 import random as r
 
-lst = [1,2,3,4,5,6,7,8,9]
-res = r.choice(lst)
-print(res)
+zara = ['\u2680','\u2680','\u2680','\u2680','\u2680','\u2680'] # \u2680 - код кубика
 
-print(r.choice(['орел','решка'])) # случайный выбор (работает со всем кроме словаря и множеств)
-#--------------------------------------------------------------
-'''import random as r
 for _ in range(10):
-    #print(r.randint(0,10)) случайные числа от 0 до 10
-    print(r.randrange(0,10,2)) # начало с 0, остановка 10 и шаг 2'''
+    print(r.choice(zara),r.choice(zara))
+#--------------------------------------------------------------------
+"""import random as r
 
+d = {'a': 1,
+     'b': 2,
+     'c': 3}
+keys = list(d.keys())
 
-
-# работа с большим объемом данных choice
+key = r.choice(keys)
+print(d[key])"""
