@@ -1,18 +1,40 @@
 # Встроенные библиотеки
 # PyPI - Python Package Index (pypi.org)
+# сгенерировать НЕ ПОВТОРЯЮЩИЕСЯ значения из списка
+'''
 import random as r
-
-zara = ['\u2680','\u2680','\u2680','\u2680','\u2680','\u2680'] # \u2680 - код кубика
+lst = [1,2,3,4,5,6,7,8,9]
 
 for _ in range(10):
-    print(r.choice(zara),r.choice(zara))
-#--------------------------------------------------------------------
-"""import random as r
+    print(r.sample(lst, k=5))
+'''
+#-----------------------------------------------------------------------------------
+'''import random as r
 
-d = {'a': 1,
-     'b': 2,
-     'c': 3}
-keys = list(d.keys())
+abc = 'qwertyuiopasdfghjklzxcvbnm'
+lst = list(abc)
+r.shuffle(list(lst))
+print(lst)'''
+#-----------------------------------------------------------------------------------
+#генерация случайного пароля, 8и значный, 1-ин символ,
+import random as r
 
-key = r.choice(keys)
-print(d[key])"""
+N = 8
+abc = 'qwertyuiopasdfghjklzxcvbnm'
+num = '123456789'
+spec ='@#$%&*~`'
+
+abc =list(abc)
+num =list(num)
+spec =list(spec)
+
+r.shuffle(abc)
+
+temp = abc[:N - 3]
+temp.append(r.choice(abc).upper())
+temp.append(r.choice(num))
+temp.append(r.choice(spec))
+r.shuffle(temp)
+res = ''.join(temp)
+
+print(res)
