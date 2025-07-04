@@ -13,3 +13,5 @@ from math import (pi,
 print('Число Пи:', round(pi,2), 'Квадратный корень: ', sqrt(4))
 print('Синус 30',chr(176),':', round(sin(radians(30)),2))
 print('Гипотенуза для 3 и 2:', hypot(3,2))
+
+#print(help(m.cos)) посмотреть информацию о функции
