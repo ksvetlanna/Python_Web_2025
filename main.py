@@ -1,5 +1,15 @@
-lst = [1, 2, 3, 10, 0, 5,7]
-res = sum(lst) # сумма чисел из переменной lst
-min_value = min(lst) # минимальное значение
-max_value = max(lst) # максимальное значение
-print(res, min_value, max_value)
+# Встроенные библиотеки
+# PyPI - Python Package Index (pypi.org)
+
+# import math as m
+#print('Число Пи:', m.pi, 'Квадратный корень: ', m.sqrt(4))
+
+from math import (pi,
+                  sqrt,
+                  sin,
+                  radians, hypot
+                  )
+
+print('Число Пи:', round(pi,2), 'Квадратный корень: ', sqrt(4))
+print('Синус 30',chr(176),':', round(sin(radians(30)),2))
+print('Гипотенуза для 3 и 2:', hypot(3,2))
