@@ -11,7 +11,7 @@ for _ in range(10):
 #-----------------------------------------------------------------------------------
 '''import random as r
 
-abc = 'qwertyuiopasdfghjklzxcvbnm'
+abc = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
 lst = list(abc)
 r.shuffle(list(lst))
 print(lst)'''
@@ -20,7 +20,7 @@ print(lst)'''
 import random as r
 
 N = 8
-abc = 'qwertyuiopasdfghjklzxcvbnm'
+abc = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
 num = '123456789'
 spec ='@#$%&*~`'
 
@@ -33,8 +33,8 @@ r.shuffle(abc)
 temp = abc[:N - 3]
 temp.append(r.choice(abc).upper())
 temp.append(r.choice(num))
-temp.append(r.choice(spec))
-r.shuffle(temp)
+temp.append(r.choice(spec)) # choice перетосовать значения
+r.shuffle(temp) # shuffle выбрать случайное значение
 res = ''.join(temp)
 
 print(res)
