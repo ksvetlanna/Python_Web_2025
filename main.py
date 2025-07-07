@@ -5,6 +5,6 @@ path = os.getcwd() # get current working directory
 os.chdir(path + '/images')
 
 all_files = [f for f in os.listdir('.')] # выводим все что содержится в директории images
-
+os.chdir('..')
 print(all_files)
 
