@@ -7,10 +7,7 @@
 # r - read - чтение (по умолчанию)
 
 
-fo = open('info.txt', 'rt')
-text = fo.read(11) # если пусто то читает от начала и до конца, если число то он прочитает только 3 байта
-fo.read(6)
-text += fo.read(7)
-print('Вот, что было в файле', end=': ')
-print(text)
+fo = open('info.txt', 'at', encoding='utf-8')
+#fo.write(' Хороший текст.')
+print('\n А вот это будет уже с новой строки.', file=fo)
 fo.close()
