@@ -1,15 +1,18 @@
-# Файлы
-# name.txt
-# t - текстовый файл (txt, html, xml)
-# b - бинарные файлы (jpg, avi, mp3)
-# w - write (если файла не было то он создается, если файл был то он ПЕРЕЗАПИСЫВАЕТСЯ)
-# a - append (запись в конец)
-# r - read - чтение (по умолчанию)
+# Файлы и ОС - модуль
+import os
 
-# ФАЙЛ ЗАКРЫВАЕТСЯ САМ!!
+path = os.getcwd() # get current working directory
+print(path)
 
-# Открытие с менеджером контеста
-with open('info.txt', 'rt') as fo:
-    text = fo.read()
-    lst = text.splitlines()
-    print(lst)
+os.chdir(path + '/images') #C:\Users\LCIMS2\PycharmProjects\SWE_PythonProject\images
+print(os.getcwd())
+
+os.chdir('..') #выйти на уровень выше
+os.chdir(path + '/fonts')
+print(os.getcwd()) #C:\Users\LCIMS2\PycharmProjects\SWE_PythonProject\fonts
+#os.mkdir('libs')  будет создана директория
+
+#os.makedirs('libs', exist_ok=True)  файл удаляется если он был. Мягкое создание директории. Вместо mkdir
+
+if os.path.exists('libs'): #проверка существования пути
+    os.rmdir('libs') #удаление директории
