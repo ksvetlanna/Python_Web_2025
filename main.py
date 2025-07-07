@@ -1,13 +1,24 @@
-from PIL import Image, ImageDraw, ImageFont
+'''
+from PIL import Image, ImageFilter, ImageEnhance
 
-orig = Image.open('images/sunny_day.jpg').convert('RGB') # конвертировать в RGB для корректной работы с ним
-#               верхняя часть
-up = orig.crop((0,0,600,200))
-#               нижняя чатсь
-down = orig.crop((0,200,600,400))
+orig = Image.open('images/Python.jpg').convert('RGB')
 
-new = Image.new('RGB', (600,400))
+blur_image = orig.filter(ImageFilter.GaussianBlur(radius=2)) # размытие, можно делать больше или меньше
+blur_image.show()'''
+#-----------------------------------------------------------------------------------------------------
+'''from PIL import Image, ImageFilter, ImageEnhance
 
-new.paste(down, (0,0))
-new.paste(up, (0,200))
-new.show()
+orig = Image.open('images/Python.jpg').convert('RGB')
+# усиление резкости
+enchancer = ImageEnhance.Sharpness(orig)
+sharpened_image = enchancer.enhance(4.0) # четкость
+sharpened_image.show()'''
+#-----------------------------------------------------------------------------------------------------
+#контуры
+from PIL import Image, ImageFilter, ImageEnhance
+
+orig = Image.open('images/Python.jpg').convert('RGB')
+# Получить контуры
+edges = orig.filter(ImageFilter.FIND_EDGES)
+
+edges.show()
