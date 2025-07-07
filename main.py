@@ -2,17 +2,9 @@
 import os
 
 path = os.getcwd() # get current working directory
-print(path)
+os.chdir(path + '/images')
 
-os.chdir(path + '/images') #C:\Users\LCIMS2\PycharmProjects\SWE_PythonProject\images
-print(os.getcwd())
+all_files = [f for f in os.listdir('.')] # выводим все что содержится в директории images
 
-os.chdir('..') #выйти на уровень выше
-os.chdir(path + '/fonts')
-print(os.getcwd()) #C:\Users\LCIMS2\PycharmProjects\SWE_PythonProject\fonts
-#os.mkdir('libs')  будет создана директория
+print(all_files)
 
-#os.makedirs('libs', exist_ok=True)  файл удаляется если он был. Мягкое создание директории. Вместо mkdir
-
-if os.path.exists('libs'): #проверка существования пути
-    os.rmdir('libs') #удаление директории
