@@ -1,31 +1,33 @@
 # Внешние библиотеки
 # Документы по шаблону (template.docx)
-# Word - DOCX (docxtpl)
-# pip freeze > requirements.txt - создание файла зависимости
-# pip install -r requirements.txt - установка списка библиотек
-from docxtpl import DocxTemplate
+# Excel (openpyxl)
+#pip install openpyxl
+#pip freeze > requirements.txt
 
-# Загрузка шаблона
-doc = DocxTemplate('docs/template.docx')
+#Пустой Excel -файл
+'''from openpyxl import Workbook
 
-# Данные для подстановки в шаблон
-content = [
-    {
-        'company': 'OOO "Монолит"',
-        'employee': 'Петров Д.И.',
-        'position': 'Менеджер',
-        'date': '01/01/2025'
-    },
-    {
-        'company': 'OOO "Арсенал"',
-        'employee': 'Иванов Д.И.',
-        'position': 'Инженер',
-        'date': '01/01/2025'
-    }
-]
+wb = Workbook()
 
-count = 1
-for item in content:
-    doc.render(item)
-    doc.save(f'docs/about{count}.docx')
-    count += 1
+ws = wb.active
+ws.title = 'Отчет'
+
+wb.save('Docs/report.xlsx')'''
+
+
+from itertools import count
+
+#Запись данных в существующий файл
+from openpyxl import load_workbook
+
+#открываем(загружаем) рабочую книгу
+wb = load_workbook('Docs/report.xlsx')
+
+#активный лист
+ws = wb.active
+
+#способы записи
+ws['F1'] = 'Привет мир'    #в какую ячейку писать (латинские буквы)
+ws.cell(row=1, column=3, value='Hello!')
+
+wb.save('Docs/newtable.xlsx')
