@@ -1,2 +1,2 @@
 def add(a, b):
-    return f'Сумма, {name}'
+    return f'Сумма, {a+b}'
