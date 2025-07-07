@@ -1,11 +1,18 @@
-#Чтение данных
-from openpyxl import load_workbook
+# Пишем и подключаем свои модули
+# from . lib import summ - из текущей директории
+# from .. lib import summ - из уровня выше
+# from .lib import summ - относительный импорт (относительно текущего файла, т.е. в этой же директории  )
+'''import lib
+lib.diff()
 
-wb = load_workbook('Docs/employees.xlsx')
+или'''
 
-ws = wb.active
-rows_count = ws.max_row # число заполненных строк
+from lib import summ
 
-for row in ws.iter_rows(values_only=True):
-    fio, pos, dept = row
-    print(f'Фамилия: {fio}, Должность: {pos}, Отдел: {dept}')
+
+def main():
+    print(summ(7, 3))
+
+# __name__ возвращает имя всего к чему обращаемся
+if __name__ == '__name__':
+    main()
