@@ -1,17 +1,34 @@
-# цветовая схема (что бы узнать цвет) или посмотреть в paint
-from PIL import Image, ImageDraw # базовые манипуляции с изображением
+# Внешние библиотеки
+# Графика
+# PIL - Python Imagine Library
+# pip freeze > requirements.txt - создание файла зависимости
+# pip install -r requirements.txt - установка списка библиотек
+from PIL import Image, ImageDraw, ImageFont
+
+# https://fontsforyou.com/ru/specific-fonts/ttf-fonts/languageru   можно скачать любой шрифт, шрифт должен быть ТОЛЬКО .ttf, скаченный файл переместить в
+W = 600
+H = 400
 
 image = Image.new('RGB',
-                  (600, 400),
-                  (0, 0, 255)) # создаем объект
-RED = (255, 0, 0)
-POLY = [(50,50),(150,50), (180,120)]
-draw = ImageDraw.Draw(image)
-draw.line((0, 0, 600, 400), fill=RED, width=5)
-draw.line((600, 0, 0, 400), fill=RED, width=5) # перечеркнутая линия с другой стороны
-draw.rectangle((10, 10, 590, 390), outline=RED, width=10)
-draw.ellipse((10, 10, 590, 390), outline=RED, width=10)
+                  (W, H),
+                  (0, 163, 232))
 
-draw.polygon(POLY, outline='green', width=15)
-draw.text((100, 100), 'Hello!', font_size=25, fill=RED)
-image.save('images/blue.jpg')
+draw = ImageDraw.Draw(image)
+
+text = 'Солнечный день'
+# draw.ellipse((470, -120, 800, 120), outline='yellow', fill='yellow')
+draw.circle((600, 0), 100, fill='yellow')
+font = ImageFont.truetype(
+    font='fonts/Geisha.ttf',  # можно использовать любой установленный шрифт, ссылка на скаченный шрифт
+    size=50
+)
+# Получаем размеры текста
+_, _, w, h = draw.textbbox((0, 0), text, font=font) # _ означает что переменная не используется
+
+# Рассчитываем позицию для центрирования
+x = (W - w) // 2
+y = (H - h) // 2
+
+draw.text((x, y), text, fill=(255, 255, 0), font=font)
+
+image.save('images/sunny_day.jpg')
