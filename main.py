@@ -6,15 +6,26 @@
 from docxtpl import DocxTemplate
 
 # Загрузка шаблона
-doc = DocxTemplate('Docs/template.docx')
+doc = DocxTemplate('docs/template.docx')
 
 # Данные для подстановки в шаблон
-content = {
-    'company': 'OOO "Монолит"',
-    'employee': 'Петров Д.И.',
-    'position': 'Менеджер',
-    'date': '01/01/2025'
-}
+content = [
+    {
+        'company': 'OOO "Монолит"',
+        'employee': 'Петров Д.И.',
+        'position': 'Менеджер',
+        'date': '01/01/2025'
+    },
+    {
+        'company': 'OOO "Арсенал"',
+        'employee': 'Иванов Д.И.',
+        'position': 'Инженер',
+        'date': '01/01/2025'
+    }
+]
 
-doc.render(content)
-doc.save('docs/about.docx')
+count = 1
+for item in content:
+    doc.render(item)
+    doc.save(f'docs/about{count}.docx')
+    count += 1
