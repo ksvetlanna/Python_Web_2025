@@ -1,4 +1,5 @@
 # Исключения (runtime)
+from babel.plural import value_node
 
 # try:
 #   что пытаемся сделать
@@ -9,27 +10,15 @@
 #finally:
 #   выполняется в любом случае
 
-
-## FileNotFoundError: [Errno 2] No such file or directory: 'information.txt' - отсутствует файл
-flag = False # открывался ли на запись
+print('Остаток от деления:')
 
 try:
-    fo = open('information.txt', 'rt', encoding='utf-8')
-    print(fo.read())
-    fo.close()
-except FileNotFoundError: # исключение см. название ошибки выше
-    fo = open('information.txt', 'wt', encoding='utf-8')
-    flag = True  # если было исключение то проставится flag
-    print('Файл не обнаружен и создан по умолчанию')
-    '''with open('information.txt','wt', encoding='utf-8') as fo:
-        fo.write('По умолчанию')'''
-
-else:
-    print('Файл открыт успешно. Читаем его и закрываем.')
-    print(fo.read())
-    fo.close()
-finally:
-    if flag: # если файл был открыт на запись (было исключение)
-        fo.write('По умолчанию')
-        fo.close()
-        print('Продолжаем работать.')
+    value = int(input('На что делим число 10:'))
+    res = 10 % value
+    print(f'Остаток от деления на 10 {value} = {res}')
+except ZeroDivisionError:
+    print('На 0 делить нельзя!')
+except ValueError:
+    print('Надо вводить только целые числа')
+except Exception as exp:
+    print('Произошло исключение: ', exp.__class__.__name__, exp)
