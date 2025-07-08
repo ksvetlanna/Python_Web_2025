@@ -1,15 +1,32 @@
-# Задача 1
+# Задача 2
+# Перепимсать 1ый вариант программы на исключения try
 
-lst = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-try:
-    index = int(input('Введите индекс: '))
-    if not -len(lst) < index < len(lst) - 1:
-        raise ValueError('Индекс вне диапазона')
-    res = lst[index]
-    print(f'Число по индексу {index}: {res}')
-except ValueError as exp:
-    mess = exp.args
-    if mess[0].startswith('invalid literal'):
-        print(f'Вводить надо числа')
+'''#пример решения задачи без try
+while True:
+    a = input('Введите первое число: ')
+    b = input('Введите второе число: ')
+
+    if a.isdigit() and b.isdigit():
+        if int(b) == 0:
+            print('На ноль делить нельзя')
+        else:
+            print(int(a) / int(b))
+            break
     else:
-        print(exp)
+        print('Вводить надо только числа.')
+'''
+
+# решение
+while True:
+    a = input('Введите первое число: ')
+    b = input('Введите второе число: ')
+    try:
+        result = int(a) / int(b)
+    except ZeroDivisionError:
+        print('На ноль делить нельзя!!!')
+    except ValueError:
+        print('Нужно вводить числа ...')
+        print(f'А введено {a} и {b} :(')
+    else:
+        print(result)
+        break
