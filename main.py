@@ -1,19 +1,12 @@
-# Библиотека pymorphy
-# устанавливем в Terminal
-# pip install pymorphy3 -сама pymorphy3
-# pip install -U pymorphy3-dicts-ru - словарь
-# pip freeze > requirements.txt
-
-from pymorphy3 import MorphAnalyzer
-
-form = MorphAnalyzer().parse('бутылка')[0]
-
-for btl in reversed(range(99)):
-    print(f'В холодильнике {btl + 1} {form.make_agree_with_number(btl + 1).word} пива')
-    print('Возьмём одну и выпьем')
-    if btl % 10 == 1 and btl != 11:
-        remain = 'Осталась'
-    else:
-        remain = 'Осталось'
-    print(f'{remain} {btl} {form.make_agree_with_number(btl).word} пива.')
-
+# Линтеры - это статический анализатор кода (контролирует написание кода)
+# Flake8
+# pip install Flake8
+# (flake8-bugbear - для нахождения типовых логических ошибок в коде)
+# (pep8-naming - проверяет имена на соответствие pep8)
+# pip install flake8-bugbear pep8-naming - установка
+# написать путь где находится flake8.exe
+# путь
+# C:\Users\LCIMS2\PycharmProjects\SWE_PythonProject\.venv\Scripts\flake8.exe
+# Arguments: --max-complexity 10 $FileDir$/$FileName$
+# Path: $FileDir$
+# Advanced Options/OutputFilter: $FILE_PATH$:$LINES$
