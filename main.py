@@ -1,5 +1,4 @@
 # Исключения (runtime)
-from babel.plural import value_node
 
 # try:
 #   что пытаемся сделать
@@ -10,19 +9,14 @@ from babel.plural import value_node
 #finally:
 #   выполняется в любом случае
 
-#Выводить ошибку пока не введут целове число не равно 0
-print('Остаток от деления:')
-loop = True # флаг
-while loop:
-    try:
-        value = int(input('На что делим число 10:'))
-        res = 10 % value
-        print(f'Остаток от деления на 10 {value} = {res}')
-    except ZeroDivisionError:
-        print('На 0 делить нельзя!')
-    except ValueError:
-        print('Надо вводить только целые числа')
-    except Exception as exp:
-        print('Произошло исключение: ', exp.__class__.__name__, exp)
-    else:
-        loop = False
+# "бросаться исключениями" - raise
+max_val = 10
+min_val = 1
+
+try:
+    val = int(input(f'Введите целое число от {min_val} до {max_val}: '))
+    if not min_val  < val < max_val:
+        raise ValueError('введенное число вне диапазона')
+    print(f'Введенное число: {val}, лежит в заданном диапазоне')
+except ValueError as exp:
+    print('Надо быть внимательнее:', exp)
