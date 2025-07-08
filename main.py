@@ -1,12 +1,23 @@
-# Линтеры - это статический анализатор кода (контролирует написание кода)
-# Flake8
-# pip install Flake8
-# (flake8-bugbear - для нахождения типовых логических ошибок в коде)
-# (pep8-naming - проверяет имена на соответствие pep8)
-# pip install flake8-bugbear pep8-naming - установка
-# написать путь где находится flake8.exe
-# путь
-# C:\Users\LCIMS2\PycharmProjects\SWE_PythonProject\.venv\Scripts\flake8.exe
-# Arguments: --max-complexity 10 $FileDir$/$FileName$
-# Path: $FileDir$
-# Advanced Options/OutputFilter: $FILE_PATH$:$LINES$
+# Регулярные выражения (поиск по паттерну)
+# Regular Expressions
+# r - строка -raw-string ("сырая" строка)
+'''
+import re
+
+pattern = r'\b\w{4}\b'   #все слова из 4х символов  (r'' - регулярное выражение )
+test_string = 'дома было холодно'
+
+#<re.Match object; span=(8, 10), match='20'> span где в строке находится совпадение, match - что повторяется
+#result = re.search(pattern, test_string)
+result = re.findall(pattern, test_string) #если много совпадений
+
+print(result)'''
+
+import re
+
+pattern = r'\d'   #все цифры от 0 до 9    (r'\d{3}' 3и цифры подряд)
+test_string = '1 телефон 4 112-2'
+
+result = re.findall(pattern, test_string) #если много совпадений
+# Тернарный условный оператор (Ternary If)
+print('Цифры  есть') if result else print('Цифр нет') #сначала выводится при выполнении условия а вконце если условие не выполнено
