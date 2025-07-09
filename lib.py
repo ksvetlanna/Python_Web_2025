@@ -1,3 +1,6 @@
+from itertools import count
+
+
 class Person:
     def __init__(self, name='Bill', age=1):
         self._name = name    #self.name атрибут кот. будет отражать свойство, поле класса
@@ -25,11 +28,14 @@ class Person:
 
 
 class Car:
+    counter = 0 # статичное свойство (счетчик машин)
+
     def __init__(self, brand='Noname', model='Noname', color='Noname'):
         self.brand = brand #'BMV'
         self.model = model #'X5'
         self.color = color #'black'
         self.engine_on = False
+        Car.counter += 1
 
     def start_engine(self):
         self.engine_on = True # self. - аналог глобальной переменной
@@ -39,6 +45,12 @@ class Car:
             print(f'Едем в {place}, на {self.brand} {self.model}')
         else:
             print('Двигатель не заведен, не едем')
+
+    @staticmethod
+    def get_counter():
+        return Car.counter
+
+
 
 def summ(a, b):
     return a + b
