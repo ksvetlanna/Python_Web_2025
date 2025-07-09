@@ -21,34 +21,20 @@
 #pattern = r'<img.*?>' # ленивый квантификатор
 #pattern =  r'<img[^>]+src="([^">]+)"' # только путь к картинке
 #pattern =  '<p>(.*?)</p>'   # вытащить только текст из html документа
-# убираем все знаки припенания
-"""import re
+#pip install requests
+#pip freeze > requirements.txt
 
-def remove_punctuation(input_str: str) -> str:
-
-#Методом sub() заменяем все найденные совпадения пустой строкой и возвращаем очищенную
-#:param input_str: строка со знаками препинания
-#:return: строку, очищенную от знаков припенания
-
-    return re.sub(r'[^\w\s]', '', input_str)
-
-test_string = 'Язык Python, явл?яясь интуи,тивно понятным, прост для изучения! Ну и PEP8.'
-result = remove_punctuation(test_string)
-print(result)
-"""
-#---------------------------------------------------------------------
 
 import re
+import requests
 
-pattern = r'[,.:;!]'
-test_string = '  яблоко, груша. банан; слива! абрикос  '
-#test_string = ''.join(test_string.split()) #убрали все пробелы
-
-result = re.split(pattern, test_string)
-# через "map" удалим пробелы лишние
-#result = list(map(lambda x: x.strip(), result))
-
-# через списочное выражение удалим пробелы лишние (list comprehension) c сортировкой
-result = sorted(x.strip() for x in result)
-
+# сначала проверили
+pattern = r'<img[^>]+src="([^">]+)"'
+html = requests.get('https://skillbox.ru').text
+#test_string = '<>img height="50" width="150" src="image/bg.jpg"'
+result = re.findall(pattern, html)
 print(result)
+
+#print(html)
+#вернулся объект
+#<Response [200]>
