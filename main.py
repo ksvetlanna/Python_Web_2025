@@ -1,3 +1,4 @@
+# https://regex101.com сайт с регулярными выражениями
 # Регулярные выражения (поиск по паттерну)
 # Regular Expressions
 # Квантификаторы (quantity)
@@ -20,29 +21,34 @@
 #pattern = r'<img.*?>' # ленивый квантификатор
 #pattern =  r'<img[^>]+src="([^">]+)"' # только путь к картинке
 #pattern =  '<p>(.*?)</p>'   # вытащить только текст из html документа
-'''import re
+# убираем все знаки припенания
+"""import re
 
-# "жадный" квантификатор (greedy quantifier)
-pattern =  r'<img.*>' #"жадный" квантификатор
-# pattern = r'<img.*?>' # ленивый квантификатор (lazy, non-greedy)
-test_string = 'Картинка <img src="bg.jp"> в тексте</p>'
-result = re.findall(pattern, test_string)
-print(result)'''
-#-------------------------------------------------------------------------------------------
-'''
+def remove_punctuation(input_str: str) -> str:
+
+#Методом sub() заменяем все найденные совпадения пустой строкой и возвращаем очищенную
+#:param input_str: строка со знаками препинания
+#:return: строку, очищенную от знаков припенания
+
+    return re.sub(r'[^\w\s]', '', input_str)
+
+test_string = 'Язык Python, явл?яясь интуи,тивно понятным, прост для изучения! Ну и PEP8.'
+result = remove_punctuation(test_string)
+print(result)
+"""
+#---------------------------------------------------------------------
+
 import re
 
-# квантификатор 
-pattern =  r'<img[^>]+src="([^">]+)"'   # только путь к картинке
-test_string = 'Картинка <img src="bg.jp"> в тексте</p>'
-result = re.findall(pattern, test_string)
-print(result)'''
-#-------------------------------------------------------------------------------------------
-import re
+pattern = r'[,.:;!]'
+test_string = '  яблоко, груша. банан; слива! абрикос  '
+#test_string = ''.join(test_string.split()) #убрали все пробелы
 
-# квантификатор
-#pattern =  '<p>(.*?)</p>'   # вытащить только текст из html документа
-pattern =  r'<p[^>]*>(.*)</p>' #более универс альная запись (содержимое абзаца с атрибутами)
-test_string = '<b>Центрируем</b><p align="center">Содержимое</p><i>и т.д.</i>'
-result = re.findall(pattern, test_string)
+result = re.split(pattern, test_string)
+# через "map" удалим пробелы лишние
+#result = list(map(lambda x: x.strip(), result))
+
+# через списочное выражение удалим пробелы лишние (list comprehension) c сортировкой
+result = sorted(x.strip() for x in result)
+
 print(result)
