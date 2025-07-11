@@ -1,15 +1,24 @@
-# Протоколы
+# dir - пролистать содержимое каталога
+# cd images - попасть в директорию images
+# cd .. - выйти на директорию уровнем выше
+# mkdir templates - создать папку templates
+# rm templates - удалить папку templates (только пустую папку удалит)
+# rm -r templates - удалить папку templates (удалит все содержимое папки и потом саму папку)
+# con - выводит консоль
+# cp info.txt .templates/info.txt - скопировать файл
+# mv info.txt .templates/info.txt - переместить файл в другую директорию
 
-# Transmission Control Protocol (TCP) — протокол управления передачей
-# Internet Protocol (IP) - разбивает на пакеты (IP-дейтаграммы)
-# TCP/IP
-# HTTP(S) - Hyper Text Transfer Protocol (Secured)
-# FTP - File Transfer Protocol
-# SMTP - Simple Mail Transfer Protocol
-# Хост-система
-# 1. Обязательная - IP-адрес: 195.34.32.11
-# 2. Необязательная - DNS (Domain Name System)
-# http(s)://www.yandex.рф//
-# ASCII %20, %2C
-# URL - Uniform Resource Locator
-# http(s)://домен.зона/page1/?param1=value1&param2=value2
+
+import sys
+# sys.argv[1] - это аргументы самого скрипта
+print('Я', sys.argv[0], 'и мой аргумент', sys.argv[1])  # sys.argv[0] это аргументы скрипта (список)
+
+if len(sys.argv) >= 2:
+    match sys.argv[1]:
+        case 'p':
+            print('Привет')
+        case 'g':
+            print('Пока')
+        case _:
+            print('Не понял')
+
