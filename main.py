@@ -1,28 +1,48 @@
-# ООП Class
+# OOП Проектирование классов
+from abc import ABC, abstractmethod
 
-class BankAccount:
-    def __init__(self, owner, balance=0.0):
-        self.owner = owner
-        self.balance = balance
 
-    def get_balance(self):
-        return self._balance
+class Animal:
+    @abstractmethod
+    def make_sound(self):
+        pass
 
-    def deposit(self, amount):
-        if amount > 0:
-            self._balance += amount
-            print(f'Депозит пополнен на сумму {amount}.')
-        else:
-            print(f'Нельзя вносить отрицательную сумму на депозит.')
 
-    def withdraw(self, amount):
-        if 0 < amount < self._balance:
-            self._balance -= amount
-            print(f'С депозит снята сумма {amount}.')
-        else:
-            print(f'Не хватает средств. Овердрафт не доступен.')
+class Dog(Animal):
+    def make_sound(self):
+        return "Гаф"
 
-client1 = BankAccount('John')
-client1.deposit(500)
-client1.withdraw(400)
-print('Остаток:', client1.get_balance())
+
+class Cat(Animal):
+    def make_sound(self):
+        return "Мяу"
+
+
+class Elephant(Animal):
+    def make_sound(self):
+        return "Протрубил"
+
+
+class Zoo:
+    def __init__(self):
+        self.animals = []
+
+    def add_animal(self, animal):
+        self.animals.append(animal)
+
+    def make_all_sounds(self):
+        for animal in self.animals:
+            print(animal.make_sound())
+
+
+dog = Dog()
+cat = Cat()
+elephant = Elephant()
+
+zoo = Zoo()
+
+zoo.add_animal(dog)
+zoo.add_animal(cat)
+zoo.add_animal(elephant)
+
+zoo.make_all_sounds()
