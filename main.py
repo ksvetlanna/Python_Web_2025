@@ -2,18 +2,21 @@
 
 import csv
 
-data = [
-    ['name', 'age', 'city'],
-    ['Борис', '25', 'Воронеж'],
-    ['Александр', '39', 'Омск'],
-    ['Павел', '48', 'Москва']
-]
+from urllib3.filepost import writer
 
 with open('people.csv','r', encoding='utf-8') as f:
-    reader = csv.reader(f, delimiter=',', quotechar='"')
-    for row in reader:
-        print(row)
+    dict_reader = csv.DictReader(f)
+    for row in dict_reader:
+        print(f'{row['name']} живет в городе {row['city']}')
 
-with  open('employee.csv', 'w', newline='', encoding='utf-8') as f:
-    writer = csv.writer(f)
-    writer.writerows(data) # убираем лишние отступы в виде пустых строк
+field_name=['name','age','city']
+
+data = {
+    'name' : 'Борис',
+    'age' : '25',
+    'city' : 'Воронеж'
+}
+
+with open('file.csv', 'w', newline='', encoding='utf-8') as f:
+    writer = csv.DictWriter(f, fieldnames=field_name)
+    writer.writerow(data)
