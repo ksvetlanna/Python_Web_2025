@@ -16,3 +16,13 @@ color: pink
 ul >li {
 color: grey;
 }
+
+#alive {
+    font-family: 'Arial';
+    font-size: 26pt;
+    text-align: center;
+}
+
+.go-top--show{
+    display: block;
+}
