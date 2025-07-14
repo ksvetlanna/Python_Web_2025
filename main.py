@@ -1,24 +1,19 @@
-# CRON имя скрипта и когда он будет рассылаться
-# Переодические задачи
-#pip install schedule
-#pip freeze > requirements.txt
+# CSV-файлы
 
-import schedule
-import datetime
+import csv
 
-i = 1 #глобальная переменная, менять нельзя!!!!!!!!!
+data = [
+    ['name', 'age', 'city'],
+    ['Борис', '25', 'Воронеж'],
+    ['Александр', '39', 'Омск'],
+    ['Павел', '48', 'Москва']
+]
 
-def job():
-    global i
-    print(f'Скрипт запустился {i} - раз')
-    i += 1
-    t = datetime.datetime.now()
-    print('Время:', t.strftime('%H:%M:%S'))
+with open('people.csv','r', encoding='utf-8') as f:
+    reader = csv.reader(f, delimiter=',', quotechar='"')
+    for row in reader:
+        print(row)
 
-
-schedule.every(3).seconds.do(job)
-# сделать по рассписанию каждые 3 сек возвращает время
-
-
-while True: #запуск
-    schedule.run_pending() #отслеживать выполнение (запускать)
+with  open('employee.csv', 'w', newline='', encoding='utf-8') as f:
+    writer = csv.writer(f)
+    writer.writerows(data) # убираем лишние отступы в виде пустых строк

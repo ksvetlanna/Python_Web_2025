@@ -38,4 +38,5 @@ color: grey;
     background-color: rgba(0, 51, 153, 0.1);
     padding: 8px 15px 12px 15px; /*слева сверху снизу справа*/
     border-radius: 50%
+    z-index: 9999;
 }
