@@ -1,17 +1,24 @@
+'''
+Базы данных (чтение)
 
-import json
+1. Импорт библиотеки sqlite3
+2. Подключаемся к БД
+3. Назначить "курсор"
+4. Работа с БД (запросы и ответы)
+5. Отключаемся от БД
+'''
+import sqlite3
 
 
-d = {
-    'ананас': 300,
-    'банан': 400,
-    'яблоко': 120,
-    'груша': 280,
-}
-#запись напрямую в файл
-#with open('fruits.json', 'w', encoding='utf-8') as f:
-#    json.dump(d, f, indent=4)
-
-#вывод в виде строки без сохранения в файл
-date = json.dumps(d, indent=4)
-print(date)
+connection = sqlite3.connect('db/movies.sqlite')           # Подключение к БД
+cursor = connection.cursor()                               # Курсор
+result = cursor.execute(                                   # Запрос (с помощью курсора)
+    '''
+    select title, year from films where year between 2001 and 2005
+    '''
+)
+array = result.fetchall()  # .fetchall() - вывести все строки
+                           # .fetchone() - выводит первую запись,
+                           # .fetchmany(N) - выводит только то количество строк которое указано в скобках (N)
+for title, year in array:
+    print(title, year) # вывести на экран результат
