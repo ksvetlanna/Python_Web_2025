@@ -1,14 +1,13 @@
 # Погода через API
-import io
 
 import requests
 from PIL import Image
+import io
 
 
-
-API_KEY ='834a33a3b254afec64a1af4a1e90efe0'
+API_KEY ='834a33a3b254afec64a1af4a1e90efe0'                 # если код не работает то зайти на сайт openweathermap.org
 URL = 'https://api.openweathermap.org/data/2.5/weather'
-CITY = 'Лондон'
+CITY = 'Дубай'
 
 params = {
     'q': CITY,
