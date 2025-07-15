@@ -26,21 +26,47 @@ delete from users where age > 30                                   # удали�
 '''
 
 import sqlite3
-import csv
+
+class Crud:
+    def __init__(self, db_path):
+        self._conn = sqlite3.connect(db_path)                      # подключение к БД
+        self._cur = self._conn.cursor()
+
+    def create(self,table_name, name, age):
+        self._cur.execute(
+            f"""
+            INSERT INTO {table_name}(name, age)
+            VALUES(?, ?)""", (name, int(age))
+        )
+        self._conn.commit()
+
+    def read(self, table_name):
+        res = self._cur.execute(
+            f'Select * from {table_name}'
+        ).fetchall()
+        for num, name, age in res:
+            print(num, name, age)
+
+    def update(self,table_name, id_num, name=None, age=None):
+        self._cur.execute(
+            f'update {table_name} set name="{name}", age={age} where id={id_num}'
+        )
+        self._conn.commit()
+
+    def delete(self, id_num, table_name):
+        self._cur.execute(
+            f'Delete from {table_name} where id<=6'
+        )
+        self._conn.commit()
+
+   # переопределяем метод уничтожения объектов
+    def __del__(self):
+        self._cur.close()
+        self._conn.close()
 
 
-with open('people.csv', 'r', encoding='utf-8') as f:
-    reader = csv.reader(f, delimiter=',')
-    next(reader) #пропустить первую строку (заголовок кот. есть в фале)
-
-    connection = sqlite3.connect('db/movies.sqlite')           # Подключение к БД
-    cursor = connection.cursor()                               # Курсор
-    for name, age in reader:
-        cursor.execute(
-        '''
-        insert into users(name, age)
-        values(?, ?)
-        ''', (name , int(age))                       # заголовок который использовался в файле
-    )
-connection.commit()
-connection.close()                                         # отключаемся от БД
+db = Crud('db/movies.sqlite')
+db.delete(2, 'users')
+#db.create('users', 'Дмитрий', 18)
+#db.update('users', 8, 'Евгений', 19)
+db.read('users')
