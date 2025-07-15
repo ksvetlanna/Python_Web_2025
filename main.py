@@ -8,7 +8,7 @@ from PIL import Image
 
 API_KEY ='834a33a3b254afec64a1af4a1e90efe0'
 URL = 'https://api.openweathermap.org/data/2.5/weather'
-CITY = 'Санкт-Петербург'
+CITY = 'Лондон'
 
 params = {
     'q': CITY,
@@ -39,5 +39,5 @@ image = requests.get(link).content
 
 if image:
     Image.open(io.BytesIO(image))                                           # вывести картинку на экран
-    #im = Image.open(io.BytesIO(image))                                      # сохранить картинку
-    #APIim.save('map.jpg')                                                      # сохранить картинку
+    #im = Image.open(io.BytesIO(image))                                     # сохранить картинку
+    #APIim.save('map.jpg')                                                  # сохранить картинку
