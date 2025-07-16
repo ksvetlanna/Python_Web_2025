@@ -9,7 +9,7 @@ from random import sample
 import sqlite3
 
 #------------------------------------------------------------------------------------------------------------------
-from flask import Flask, url_for  # вызываем конструктор
+from flask import Flask, url_for, request  # вызываем конструктор
 
 
 app = Flask(__name__) # на локальном компьютере запустится для отладки скрипта
@@ -98,6 +98,20 @@ def get_user(id_num=None):
     <td>{city}</td>
     </tr>
     </table>'''
+
+@app.route('/form-test', methods=['POST', 'GET'])
+def form_test():
+    if request.method == 'GET':
+        with open('form.html', 'r', encoding='utf-8') as html:
+            return html.read()
+    elif request.method == 'POST':
+        print(request.form['email'])
+        print(request.form['level'])
+        print(request.form['about'])
+        print(request.form['gender'])
+        print(request.form['accept'])
+
+        return 'Форма успешно отправлена'
 
 if __name__ == '__main__': # запускаем
     app.run(host='localhost', port=5000, debug=debug)
