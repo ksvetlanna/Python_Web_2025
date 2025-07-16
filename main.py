@@ -4,7 +4,9 @@
 # pip freeze > requirements.txt
 # MVC- Model View Controller
 from fileinput import filename
+from http.client import responses
 from random import sample
+import sqlite3
 
 #------------------------------------------------------------------------------------------------------------------
 from flask import Flask, url_for  # вызываем конструктор
@@ -56,6 +58,33 @@ def sample_page():
         </body>
         </html> 
             """
+
+@app.route('/sample-page2')            # прочитали файл в вывели в строку
+def sample_page2():
+    with open('temp.html','r', encoding='utf-8') as html:
+        return html.read()
+
+# типы конвектора: по умолчанию <string>
+# <int:number> целое число
+# <float:number> дробь, вещественные числа
+# <path:p> может содержать слэши для указания пути
+# <uuid:id> строка-идентификатор  (пример - 54610465па4552-ывп263)  содержит 16 байт в 16ричном формате
+@app.route('/greeting/<user>/<int:id_num>') #<user> будет воспринимать как информацию для функции поле user
+def greeting(user, id_num):
+    return f'Привет, {user} с id={id_num}'
+
+# подключились к БД, для проверки загрузить http://localhost:5000/get-user/17
+@app.route('/get-user/<int:id_num>')
+def get_user(id_num):
+    conn = sqlite3.connect('db/movies.sqlite') #подключаемся к БД
+    cur = conn.cursor()
+    query = f'select name from dz_users where trip_id={id_num}' #выполняем запрос
+    response = cur.execute(query)
+    result = response.fetchone()
+    #print(result)
+    cur.close()
+    conn.close()
+    return str(result[0])
 
 if __name__ == '__main__': # запускаем
     app.run(host='localhost', port=5000, debug=debug)
