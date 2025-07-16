@@ -3,6 +3,12 @@
 # pip install flask
 # pip freeze > requirements.txt
 # MVC- Model View Controller
+# Get -запрашивает данные не меняя состояния сервера (read)
+# Post - отправляет данные на сервер (submit)
+# Put - заменяет все на сервере из контекста запроса ("заменить")
+# Delete - удаляет указанные данные
+# Patch - частичное изменение даннах
+
 from fileinput import filename
 from http.client import responses
 from random import sample
