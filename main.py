@@ -78,13 +78,23 @@ def greeting(user, id_num):
 def get_user(id_num):
     conn = sqlite3.connect('db/movies.sqlite') #подключаемся к БД
     cur = conn.cursor()
-    query = f'select name from dz_users where trip_id={id_num}' #выполняем запрос
+    query = f'select name, city from dz_users where trip_id={id_num}' #выполняем запрос
     response = cur.execute(query)
     result = response.fetchone()
+    name, city = result
     #print(result)
     cur.close()
     conn.close()
-    return str(result[0])
+    return f'''<table border="1">
+    <tr>
+    <td>ФИО</td>
+    <td>Город</td>
+    </tr>
+    <tr>
+    <td>{name}</td>
+    <td>{city}</td>
+    </tr>
+    </table>'''
 
 if __name__ == '__main__': # запускаем
     app.run(host='localhost', port=5000, debug=debug)
