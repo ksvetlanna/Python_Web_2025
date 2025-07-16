@@ -74,11 +74,14 @@ def greeting(user, id_num):
     return f'Привет, {user} с id={id_num}'
 
 # подключились к БД, для проверки загрузить http://localhost:5000/get-user/17
+@app.route('/get-user/')      # обработка ошибки, если пользователь ничего не ввел в параметр
 @app.route('/get-user/<int:id_num>')
-def get_user(id_num):
-    conn = sqlite3.connect('db/movies.sqlite') #подключаемся к БД
+def get_user(id_num=None):
+    if id_num is None:
+        return 'Нет номера записи'
+    conn = sqlite3.connect('db/movies.sqlite') # подключаемся к БД
     cur = conn.cursor()
-    query = f'select name, city from dz_users where trip_id={id_num}' #выполняем запрос
+    query = f'select name, city from dz_users where trip_id={id_num}' # выполняем запрос
     response = cur.execute(query)
     result = response.fetchone()
     name, city = result
