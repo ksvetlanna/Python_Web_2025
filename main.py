@@ -1,70 +1,33 @@
-# Декораторы
-import time
-from turtledemo.penrose import start
+# Введение во Flask
+# В Terminal установить:
+# pip install flask
+# pip freeze > requirements.txt
+# MVC- Model View Controller
+
+from flask import Flask  # вызываем конструктор
 
 
-def timeit(func):
-    def wrapper(*args, **kwargs):
-        start = time.time()
-        result = func(*args, **kwargs)
-        finish = time.time()
-        print(f'Функция исполнялась:{finish - start:.4f} сек.')
-        return result
-    return wrapper
+app = Flask(__name__) # на локальном компьютере запустится для отладки скрипта
+debug = False         # сделать true если нужно проверить
 
-@timeit
-def test():
-    time.sleep(0.8)
+@app.route('/')         # декоратор смотрит какой путь набрали,
+@app.route('/index')
+def index():
+    return 'Привет, Flask'
+# проверить что выводит http://localhost:5000/index
 
-test()
-#--------------------------------------------------------------------------------------------
-'''def logger(func):
-    counter = 0
-    def decorated_func(*args, **kwargs):
-        nonlocal counter
-        counter += 1
-        print(counter, '->', 'Аргументы:', args, 'Именованные аргументы:', kwargs)
-        result = func(*args, **kwargs)
-        print('____', 'Результат:', result)
-        return result
-    return decorated_func
+@app.route('/about')
+def about():
+    print('Вызвана функция about')
+    return 'О нас'
+# проверить что выводит http://localhost:5000/about
 
-@logger
-def make_burger(meal='говядиной', onion=False, tomato=False):
-    print('Булочка')
-    if onion:
-        print('Луковые кольца')
-    print('Котлета с', meal)
-    if tomato:
-        print('Помидоры')
-    print('Булочка')
-make_burger('бараниной', onion=True)'''
+@app.route('/countdown')
+def countdown():
+    lst = [str(x) for x in reversed(range(10))] # сделали обратный отсчет от 10 ... 0
+    lst.append('Полетели!!!')
+    return '<br>'.join(lst)    #<br> и спользуем в качестве объединителя, возвращает только СТРОКУ
+# проверить что выводит http://localhost:5000/countdown
 
-#--------------------------------------------------------------------------------------------
-'''def outher():
-    x = 5
-
-    def inner():
-        nonlocal x
-        print('Nonlocal x=', x)
-        x = 10
-    inner()
-    print('New x=', x)
-
-outher()'''
-
-#--------------------------------------------------------------------------------------------
-# Декораторы
-# Выводит большими буквами сообщение
-'''def upper_case_print(old_func):
-    def new_func(*args, **kwargs):
-        case = kwargs.pop('case', None)
-        if case == 'U':
-            args = [str(arg).upper() for arg in args]
-        if case == 'L':
-            args = [str(arg).lower() for arg in args]
-        return old_func(*args, **kwargs)
-    return new_func
-new_print = upper_case_print(print)
-new_print('Привет, Пока')
-new_print('Привет, Пока', case='U')'''
+if __name__ == '__main__': # запускаем
+    app.run(host='localhost', port=5000, debug=debug)
