@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Список дел</title>
+</head>
+<body>
+<ol>
+  {% for item in deals %} <!--цикл тест -->
+  <li>{{item}}</li>       <!--В двойных скобочках пишем переменную -->
+  {% endfor %}
+</ol>
+</body>
+</html>

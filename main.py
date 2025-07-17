@@ -8,7 +8,7 @@
 # Put - заменяет все на сервере из контекста запроса ("заменить")
 # Delete - удаляет указанные данные
 # Patch - частичное изменение даннах
-
+# шаблонизатор Jinja
 from fileinput import filename
 from http.client import responses
 from random import sample
@@ -16,7 +16,7 @@ import os.path
 
 
 #------------------------------------------------------------------------------------------------------------------
-from flask import Flask, url_for, request  # вызываем конструктор
+from flask import Flask, url_for, request, render_template  # вызываем конструктор
 from werkzeug.utils import secure_filename
 import sqlite3
 
@@ -24,18 +24,23 @@ import sqlite3
 
 app = Flask(__name__) # на локальном компьютере запустится для отладки скрипта
 app.config['UPLOAD_FOLDER'] = 'uploads/'     #директория куда сохраняем, слева в дереве
-ALLOWED_EXTENSIONS = ['txt', 'pdf', 'zip', 'jpg', 'png']     # расширения которые мы разрешаем для загрузки
+ALLOWED_EXTENSIONS = ['txt', 'pdf', 'zip', 'jpg', 'png']    # расширения которые мы разрешаем для загрузки
 debug = False         # сделать true если нужно проверить
 
 def allowed_file(filename):   #проверка на корректность файла
-    return ('.' in filename
-            and filename.rsolit('.',1)[1].lower() in ALLOWED_EXTENSIONS)       # для переноса каретки используем скобки
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS       # для переноса каретки используем скобки
 
 
 @app.route('/')         # декоратор смотрит какой путь набрали,
-@app.route('/index')
 def index():
-    return 'Привет, Flask'
+    username = 'слушатель'
+    params = {}
+    params['user'] = 'слушатель'
+    params['title'] = 'приветствие'
+    params['weather'] = 'Сегодня хорошая погода'
+    return render_template('index.html',
+                           **params)
 # проверить что выводит http://localhost:5000/index
 
 
@@ -132,7 +137,7 @@ def form_test():
 
 # для загрузки файла
 #C:\Users\LCIMS2\PycharmProjects\SWE_PythonProject\old\images
-@app.route('/upload', methods=['POST','GET'])
+'''@app.route('/upload', methods=['POST','GET'])
 def file_upload():
     if request.method == 'GET':
         with open('upload.html', 'r', encoding='utf-8') as html:
@@ -149,7 +154,39 @@ def file_upload():
             new_name = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_name))
             return f'Файл {new_name} успешно загружен!'
+    return "Ошибка загрузки"'''
+
+@app.route('/upload', methods=['POST', 'GET'])
+def file_upload():
+    if request.method == 'GET':
+        with open('upload.html', 'r', encoding='utf-8') as html:
+            return html.read()
+    elif request.method == 'POST':
+        # print(request.files)
+        if 'file' not in request.files:
+            return 'Файл не был выбран!!!'
+
+        file = request.files['file']
+
+        if file.filename == '':
+            return 'Файл не был выбран!!!'
+
+        if file and allowed_file(file.filename):
+            new_name = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_name))
+            return f'Файл {new_name} успешно загружен!'
     return "Ошибка загрузки"
+
+@app.route('/numbers')
+def odd_even():
+    return render_template('numbers.html',
+                           title='Чет-нечёт', number=2)
+
+@app.route('/deals')
+def printlist():
+    deal = ['Помыть посуду','Выгулять собаку','Помыть посуду','Погулять']
+    return render_template('printlist.html',
+                            deals=deal)
 
 if __name__ == '__main__': # запускаем
     app.run(host='localhost', port=5000, debug=debug)
