@@ -47,8 +47,13 @@ def index():
 @app.route('/about')
 def about():
     print('Вызвана функция about')
-    return 'О нас'
+    return render_template('about.html', title='О нас')
 # проверить что выводит http://localhost:5000/about
+
+@app.route('/contacts')
+def contacts():
+    print('Вызвана функция contacts')
+    return render_template('contacts.html', title='Контакты')
 
 
 @app.route('/countdown')
