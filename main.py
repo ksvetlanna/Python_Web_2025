@@ -137,25 +137,6 @@ def form_test():
 
 # для загрузки файла
 #C:\Users\LCIMS2\PycharmProjects\SWE_PythonProject\old\images
-'''@app.route('/upload', methods=['POST','GET'])
-def file_upload():
-    if request.method == 'GET':
-        with open('upload.html', 'r', encoding='utf-8') as html:
-            return html.read()
-    elif request.method == 'POST':
-        if 'file' not in request.files:
-            return 'Файл не был выбран!!!'
-        file = request.files['file']       # пишем имя кот указали в name
-
-        if file.filename == '':             # если название файла пустое
-            return 'Файл без имени'
-
-        if file and allowed_file(file.filename):
-            new_name = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_name))
-            return f'Файл {new_name} успешно загружен!'
-    return "Ошибка загрузки"'''
-
 @app.route('/upload', methods=['POST', 'GET'])
 def file_upload():
     if request.method == 'GET':
@@ -166,9 +147,9 @@ def file_upload():
         if 'file' not in request.files:
             return 'Файл не был выбран!!!'
 
-        file = request.files['file']
+        file = request.files['file']       # пишем имя кот. указали в name
 
-        if file.filename == '':
+        if file.filename == '':            # если название файла пустое
             return 'Файл не был выбран!!!'
 
         if file and allowed_file(file.filename):
@@ -177,16 +158,23 @@ def file_upload():
             return f'Файл {new_name} успешно загружен!'
     return "Ошибка загрузки"
 
+
 @app.route('/numbers')
-def odd_even():
+@app.route('/numbers/<int:num>')
+def odd_even(num=None):
+    if num is None:
+        return render_template('numbers.html',
+                           title='Нет числа', number='')
     return render_template('numbers.html',
-                           title='Чет-нечёт', number=2)
+                           title='Нет числа', number=num)
 
 @app.route('/deals')
 def printlist():
     deal = ['Помыть посуду','Выгулять собаку','Помыть посуду','Погулять']
     return render_template('printlist.html',
                             deals=deal)
+
+
 
 @app.route('/queue')
 def queue():
