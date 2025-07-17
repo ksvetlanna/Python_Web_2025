@@ -12,14 +12,25 @@
 from fileinput import filename
 from http.client import responses
 from random import sample
-import sqlite3
+import os.path
+
 
 #------------------------------------------------------------------------------------------------------------------
 from flask import Flask, url_for, request  # вызываем конструктор
+from werkzeug.utils import secure_filename
+import sqlite3
+
 
 
 app = Flask(__name__) # на локальном компьютере запустится для отладки скрипта
+app.config['UPLOAD_FOLDER'] = 'uploads/'     #директория куда сохраняем, слева в дереве
+ALLOWED_EXTENSIONS = ['txt', 'pdf', 'zip', 'jpg', 'png']     # расширения которые мы разрешаем для загрузки
 debug = False         # сделать true если нужно проверить
+
+def allowed_file(filename):   #проверка на корректность файла
+    return ('.' in filename
+            and filename.rsolit('.',1)[1].lower() in ALLOWED_EXTENSIONS)       # для переноса каретки используем скобки
+
 
 @app.route('/')         # декоратор смотрит какой путь набрали,
 @app.route('/index')
@@ -118,6 +129,27 @@ def form_test():
         print(request.form['accept'])
 
         return 'Форма успешно отправлена'
+
+# для загрузки файла
+#C:\Users\LCIMS2\PycharmProjects\SWE_PythonProject\old\images
+@app.route('/upload', methods=['POST','GET'])
+def file_upload():
+    if request.method == 'GET':
+        with open('upload.html', 'r', encoding='utf-8') as html:
+            return html.read()
+    elif request.method == 'POST':
+        if 'file' not in request.files:
+            return 'Файл не был выбран!!!'
+        file = request.files['file']       # пишем имя кот указали в name
+
+        if file.filename == '':             # если название файла пустое
+            return 'Файл без имени'
+
+        if file and allowed_file(file.filename):
+            new_name = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_name))
+            return f'Файл {new_name} успешно загружен!'
+    return "Ошибка загрузки"
 
 if __name__ == '__main__': # запускаем
     app.run(host='localhost', port=5000, debug=debug)
