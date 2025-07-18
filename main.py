@@ -215,8 +215,11 @@ if __name__ == '__main__':
     user = User()
     db_sess = db_session.create_session()
     #first = db_sess.query(User).all()      # .all() - все пользователи, .filter(User.id >1) выведет всех, кроме 1го
-    first = db_sess.query(User).filter(User.id != 1, User.email.not_like('%n%')).all()
-    print(first)
+    user = db_sess.query(User).filter(User.id == 2).first()
+    db_sess.delete(user)
+    #user.set_username('User1')
+    db_sess.commit()
+    print(user)
     #user.name = 'User_2'
     #user.about = 'Администратор'
     #user.email = 'a@b2.ru'
