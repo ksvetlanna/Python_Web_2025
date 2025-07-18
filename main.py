@@ -7,26 +7,30 @@
 # PATCH - частичное изменение данных
 # JINJA - переменные, условия, циклы и т.д.
 # ORM - Object Relational Mapping
+#  pip install flask-login
 import os.path
 from sqlite3 import Error
 
-from pyexpat.errors import messages
-
-from forms.loginform import LoginForm
 from flask import Flask, url_for, request, render_template, redirect
 from werkzeug.utils import secure_filename
 from data import db_session
 import sqlite3
 from data.users import User
 from data.news import News
-from data import db_session
 from forms.loginform import LoginForm
 from forms.user import Register
+from flask_login import LoginManager, login_user, logout_user
 
 
 app = Flask(__name__)
+
+
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
 app.config['UPLOAD_FOLDER'] = 'uploads/'
-app.config['SECRET_KEY'] = 'just_secret_key'
+app.config['SECRET_KEY'] = 'just_secret_key'                    # just_secret_key можно заменить на свой ключ
 ALLOWED_EXTENSIONS = ['txt', 'pdf', 'zip', 'jpg', 'png']
 debug = False
 
@@ -34,6 +38,11 @@ debug = False
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@login_manager.user_loader
+def load_user(user_id):
+    db_sess = db_session.create_session()
+    return db_sess.query(User).get(user_id)
 
 @app.errorhandler(404)
 def not_found(e):
@@ -66,8 +75,20 @@ def contacts():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        return 'Форма отправлена'
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.email == form.email.data).first()
+        if user and user.check_password(form.password.data):
+            login_user(user, remember=form.remember_me.data)
+            return redirect('/')
+        return render_template('login.html', messages='Неверный логин или пароль', title='Ошибка авторизации', form=form)
     return render_template('login.html', title='Авторизация', form=form)
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect('/')
+
 
 
 @app.route('/register', methods=['POST', 'GET'])
