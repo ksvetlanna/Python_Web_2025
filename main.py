@@ -10,12 +10,19 @@
 import os.path
 from sqlite3 import Error
 
+from pyexpat.errors import messages
+
 from forms.loginform import LoginForm
-from flask import Flask, url_for, request, render_template
+from flask import Flask, url_for, request, render_template, redirect
 from werkzeug.utils import secure_filename
 from data import db_session
 import sqlite3
 from data.users import User
+from data.news import News
+from data import db_session
+from forms.loginform import LoginForm
+from forms.user import Register
+
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads/'
@@ -59,6 +66,37 @@ def login():
         return 'Форма отправлена'
     return render_template('login.html', title='Авторизация', form=form)
 
+
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+    form = Register()
+    if form.validate_on_submit():  # тоже самое, что и request.method == 'POST'
+        # если пароли не совпали
+        if form.password.data != form.password_again.data:
+            return render_template('register.html',
+                                   title='Регистрация',
+                                   message='Пароли не совпадают',
+                                   form=form)
+
+        db_sess = db_session.create_session()
+
+        # Если пользователь с таким E-mail в базе уже есть
+        if db_sess.query(User).filter(User.email == form.email.data).first():
+            return render_template('register.html',
+                                   title='Регистрация',
+                                   message='Такой пользователь уже есть',
+                                   form=form)
+        user = User(
+            name=form.name.data,
+            email=form.email.data,
+            about=form.about.data
+        )
+        user.set_password(form.password.data)
+        db_sess.add(user)
+        db_sess.commit()
+        return redirect('/login')
+    return render_template('register.html',
+                           title='Регистрация', form=form)
 
 @app.route('/countdown')
 def cd():
@@ -208,21 +246,22 @@ def queue():
     # loop.last - True, если последняя итерация
     return render_template('vars.html', title='Стоим в очереди')
 
+@app.route('/news')
+def news():
+    db_sess = db_session.create_session()
+    all_news = db_sess.query(News).filter(News.is_private != True).all()
+    print(all_news)
+    return render_template('news.html', title='Новости', news=all_news)
 
 if __name__ == '__main__':
     db_session.global_init('db/news.sqlite')
-    #app.run(host='127.0.0.1', port=5000, debug=debug)   #Запуск
-    user = User()
-    db_sess = db_session.create_session()
-    #first = db_sess.query(User).all()      # .all() - все пользователи, .filter(User.id >1) выведет всех, кроме 1го
-    user = db_sess.query(User).filter(User.id == 2).first()
-    db_sess.delete(user)
-    #user.set_username('User1')
-    db_sess.commit()
-    print(user)
-    #user.name = 'User_2'
-    #user.about = 'Администратор'
-    #user.email = 'a@b2.ru'
     #db_sess = db_session.create_session()
-    #db_sess.add(user)
+    #user = db_sess.query(User).filter(User.id == 1).first()
+    app.run(host='127.0.0.1', port=5000, debug=debug)   #Запуск
+    #news = News(title='Next News 3', content='News Content', is_private=False)
+    #news.id = 'User_2'
+    #news.title = 'Администратор'
+    #news.email = 'a@b2.ru'
+    #user.news.append(news)
+    #db_sess.add(news)
     #db_sess.commit()
