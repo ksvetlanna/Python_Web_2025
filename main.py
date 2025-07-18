@@ -213,9 +213,13 @@ if __name__ == '__main__':
     db_session.global_init('db/news.sqlite')
     #app.run(host='127.0.0.1', port=5000, debug=debug)
     user = User()
-    user.name = 'User_2'
-    user.about = 'Администратор'
-    user.email = 'a@b2.ru'
     db_sess = db_session.create_session()
-    db_sess.add(user)
-    db_sess.commit()
+    #first = db_sess.query(User).all()      # .all() - все пользователи, .filter(User.id >1) выведет всех, кроме 1го
+    first = db_sess.query(User).filter(User.id !=1, User.email.not_like('%n%')).all()
+    print(first)
+    #user.name = 'User_2'
+    #user.about = 'Администратор'
+    #user.email = 'a@b2.ru'
+    #db_sess = db_session.create_session()
+    #db_sess.add(user)
+    #db_sess.commit()
