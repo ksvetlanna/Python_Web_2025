@@ -211,11 +211,11 @@ def queue():
 
 if __name__ == '__main__':
     db_session.global_init('db/news.sqlite')
-    #app.run(host='127.0.0.1', port=5000, debug=debug)
+    #app.run(host='127.0.0.1', port=5000, debug=debug)   #Запуск
     user = User()
     db_sess = db_session.create_session()
     #first = db_sess.query(User).all()      # .all() - все пользователи, .filter(User.id >1) выведет всех, кроме 1го
-    first = db_sess.query(User).filter(User.id !=1, User.email.not_like('%n%')).all()
+    first = db_sess.query(User).filter(User.id != 1, User.email.not_like('%n%')).all()
     print(first)
     #user.name = 'User_2'
     #user.about = 'Администратор'
