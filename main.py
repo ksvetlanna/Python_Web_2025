@@ -12,6 +12,7 @@ import os.path
 from sqlite3 import Error
 
 from flask import Flask, url_for, request, render_template, redirect, abort
+from openpyxl.styles.builtins import title
 from werkzeug.utils import secure_filename
 from data import db_session
 import sqlite3
@@ -67,8 +68,7 @@ def index():
 @app.route('/about')
 @login_required                          # сможет войти только зарегистрированный пользователь
 def about():
-    return render_template('about.html',
-                           title='Про нас')
+    return render_template('about.html', title='Про нас')
 
 
 @app.route('/contacts')
@@ -349,6 +349,19 @@ def news_delete(news_id):
     else:
         abort(404)
     return redirect('/news')
+
+@app.route('/adminpage', methods=['GET', 'POST'])
+@login_required
+def adminpanel():
+    if current_user.is_authenticated and current_user.is_admin():
+        db_sess = db_session.create_session()
+        res = db_sess.query(News).all()
+        return render_template('admin.html',
+                               title='Панель администратора',
+                               news=res)
+    else:
+        abort(404)
+
 
 if __name__ == '__main__':
     db_session.global_init('db/news.sqlite')

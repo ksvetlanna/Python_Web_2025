@@ -15,7 +15,7 @@
                 <a href="/" class="navbar-brand">Главная</a>
                 <a href="/news" class="navbar-brand">Новости</a>
                 {% if current_user.is_authenticated %}
-                <a class="navbar-brand" href="/logout">{{current_user}}</a>
+                <a class="navbar-brand" title="Нажмите, что бы выйти" href="/logout">{{current_user}}</a>
                 {% else %}
                 <a href="/register" class="navbar-brand">Регистрация</a>
                 <a href="/login" class="navbar-brand">Авторизация</a>
