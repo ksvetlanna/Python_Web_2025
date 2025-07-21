@@ -7,32 +7,37 @@
 # PATCH - частичное изменение данных
 # JINJA - переменные, условия, циклы и т.д.
 # ORM - Object Relational Mapping
-#  pip install flask-login
+# DBeaver - универсальный софт для работы с БД
+# SOA - Service Oriented Architecture
+# MSA - Micro Service Architecture
+# REST - REpresentation State Transfer
+# GET - /book/page/50
+# GET - /book
+# POST - /book
+# DELETE - /book/7
 import os.path
+import sqlite3
 from sqlite3 import Error
 
+import requests
 from flask import Flask, url_for, request, render_template, redirect, abort
-from openpyxl.styles.builtins import title
 from werkzeug.utils import secure_filename
-from data import db_session
-import sqlite3
-from data.users import User
+
+from data import db_session, news_api
 from data.news import News
+from data.users import User
 from forms.loginform import LoginForm
 from forms.news import NewsForm
 from forms.user import Register
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 
-
 app = Flask(__name__)
-
-
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 app.config['UPLOAD_FOLDER'] = 'uploads/'
-app.config['SECRET_KEY'] = 'just_secret_key'                    # just_secret_key можно заменить на свой ключ
+app.config['SECRET_KEY'] = 'just_secret_key'
 ALLOWED_EXTENSIONS = ['txt', 'pdf', 'zip', 'jpg', 'png']
 debug = False
 
@@ -41,18 +46,22 @@ def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
 
+
 @app.errorhandler(404)
 def not_found(e):
     return render_template('404.html', title='Не найдено')
 
+
 @app.errorhandler(401)
-def not_authorizet(_):                                 # если переменная нигде не используется то "_"
+def not_authorized(_):
     return redirect('/login')
+
 
 @app.route('/')
 @app.route('/index')
@@ -66,9 +75,10 @@ def index():
 
 
 @app.route('/about')
-@login_required                          # сможет войти только зарегистрированный пользователь
+@login_required
 def about():
-    return render_template('about.html', title='Про нас')
+    return render_template('about.html',
+                           title='Про нас')
 
 
 @app.route('/contacts')
@@ -86,7 +96,10 @@ def login():
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return redirect('/')
-        return render_template('login.html', messages='Неверный логин или пароль', title='Ошибка авторизации', form=form)
+        return render_template('login.html',
+                               message='Неверный логин или пароль',
+                               title='Ошибка авторизации',
+                               form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
 
@@ -95,7 +108,6 @@ def login():
 def logout():
     logout_user()
     return redirect('/')
-
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -129,6 +141,7 @@ def register():
     return render_template('register.html',
                            title='Регистрация', form=form)
 
+
 @app.route('/countdown')
 def cd():
     lst = [str(x) for x in reversed(range(10))]
@@ -158,7 +171,7 @@ def sample_page():
 
 @app.route('/sample-page2')
 def sample_page2():
-    with open('temp.html', 'r', encoding='utf-8') as html:
+    with open('old/temp.html', 'r', encoding='utf-8') as html:
         return html.read()
 
 
@@ -219,11 +232,10 @@ def get_user(id_num=None):
             con.close()
 
 
-
 @app.route('/form-test', methods=['POST', 'GET'])
 def form_test():
     if request.method == 'GET':
-        with open('form.html', 'r', encoding='utf-8') as html:
+        with open('old/form.html', 'r', encoding='utf-8') as html:
             return html.read()
     elif request.method == 'POST':
         print(request.form)
@@ -233,7 +245,7 @@ def form_test():
 @app.route('/upload', methods=['POST', 'GET'])
 def file_upload():
     if request.method == 'GET':
-        with open('upload.html', 'r', encoding='utf-8') as html:
+        with open('old/upload.html', 'r', encoding='utf-8') as html:
             return html.read()
     elif request.method == 'POST':
         # print(request.files)
@@ -277,6 +289,8 @@ def queue():
     # loop.last - True, если последняя итерация
     return render_template('vars.html', title='Стоим в очереди')
 
+
+# Вывод всех публичных новостей (is_private == False)
 @app.route('/news')
 def news():
     db_sess = db_session.create_session()
@@ -289,7 +303,8 @@ def news():
     return render_template('news.html',
                            title='Новости', news=all_news)
 
-@app.route('/newsjob', methods=['POST', 'GET'])
+
+@app.route('/newsjob', methods=['GET', 'POST'])
 @login_required
 def add_news():
     form = NewsForm()
@@ -303,9 +318,12 @@ def add_news():
         db_sess.merge(current_user)
         db_sess.commit()
         return redirect('/news')
-    return render_template('newsjob.html', title='Добавление новости', form=form)
+    return render_template('newsjob.html',
+                           title='Добавление новости',
+                           form=form)
 
-@app.route('/newsjob/<int:id_num>', methods=['POST', 'GET'])
+
+@app.route('/newsjob/<int:id_num>', methods=['GET', 'POST'])
 @login_required
 def edit_news(id_num):
     form = NewsForm()
@@ -315,9 +333,9 @@ def edit_news(id_num):
             News.id == id_num, News.user == current_user
         ).first()
         if news:
-            news.title.data = form.title
-            news.content.data = form.content
-            news.is_private.data = form.is_private
+            form.title.data = news.title
+            form.content.data = news.content
+            form.is_private.data = news.is_private
         else:
             abort(404)
     if form.validate_on_submit():
@@ -326,14 +344,17 @@ def edit_news(id_num):
             News.id == id_num, News.user == current_user
         ).first()
         if news:
-            form.title = news.title.data
-            form.content = news.content.data
-            form.is_private = news.is_private.data
+            news.title = form.title.data
+            news.content = form.content.data
+            news.is_private = form.is_private.data
             db_sess.commit()
             return redirect('/news')
-    else:
-        abort(404)
-    return render_template('newsjob.html', title='Редактирование новости', form=form)
+        else:
+            abort(404)
+    return render_template('newsjob.html',
+                           title='Редактирование новости',
+                           form=form)
+
 
 @app.route('/newsdel/<int:news_id>')
 @login_required
@@ -350,6 +371,7 @@ def news_delete(news_id):
         abort(404)
     return redirect('/news')
 
+
 @app.route('/adminpage', methods=['GET', 'POST'])
 @login_required
 def adminpanel():
@@ -363,15 +385,36 @@ def adminpanel():
         abort(404)
 
 
+@app.route('/testapi')
+def testapi():
+    return requests.get('http://localhost:5000/api/news').json()
+
+
 if __name__ == '__main__':
     db_session.global_init('db/news.sqlite')
-    #db_sess = db_session.create_session()
-    #user = db_sess.query(User).filter(User.id == 1).first()
-    app.run(host='127.0.0.1', port=5000, debug=debug)   #Запуск
-    #news = News(title='Next News 3', content='News Content', is_private=False)
-    #news.id = 'User_2'
-    #news.title = 'Администратор'
-    #news.email = 'a@b2.ru'
-    #user.news.append(news)
-    #db_sess.add(news)
-    #db_sess.commit()
+    app.register_blueprint(news_api.blueprint)
+    app.run(host='127.0.0.1', port=5000, debug=debug)
+
+    # db_sess = db_session.create_session()
+    # user = db_sess.query(User).filter(User.id == 1).first()
+    # for news in user.news:
+    #     print(news)
+    # print(user.id)
+    # news = News(title='Third News', content='Third Content',
+    #              is_private=False)
+    # user.news.append(news)
+    # # db_sess.add(news)
+    # db_sess.commit()
+    # user = User()
+    # db_sess = db_session.create_session()
+    # user = db_sess.query(User).filter(User.id == 1).first()
+    # print(user)
+    # db_sess.delete(user)
+    # # user.set_username('John')
+    # db_sess.commit()
+    # user.name = 'User2'
+    # user.about = 'Данные про User2'
+    # user.email = 'b@c.ru'
+    # db_sess = db_session.create_session()
+    # db_sess.add(user)
+    # db_sess.commit()
