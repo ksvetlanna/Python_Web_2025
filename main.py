@@ -11,15 +11,16 @@
 import os.path
 from sqlite3 import Error
 
-from flask import Flask, url_for, request, render_template, redirect
+from flask import Flask, url_for, request, render_template, redirect, abort
 from werkzeug.utils import secure_filename
 from data import db_session
 import sqlite3
 from data.users import User
 from data.news import News
 from forms.loginform import LoginForm
+from forms.news import NewsForm
 from forms.user import Register
-from flask_login import LoginManager, login_user, logout_user
+from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 
 
 app = Flask(__name__)
@@ -48,6 +49,10 @@ def load_user(user_id):
 def not_found(e):
     return render_template('404.html', title='Не найдено')
 
+@app.errorhandler(401)
+def not_authorizet(_):                                 # если переменная нигде не используется то "_"
+    return redirect('/login')
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -60,6 +65,7 @@ def index():
 
 
 @app.route('/about')
+@login_required                          # сможет войти только зарегистрированный пользователь
 def about():
     return render_template('about.html',
                            title='Про нас')
@@ -85,6 +91,7 @@ def login():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect('/')
@@ -273,9 +280,75 @@ def queue():
 @app.route('/news')
 def news():
     db_sess = db_session.create_session()
-    all_news = db_sess.query(News).filter(News.is_private != True).all()
-    print(all_news)
-    return render_template('news.html', title='Новости', news=all_news)
+    if current_user.is_authenticated:
+        all_news = db_sess.query(News).filter(
+            (News.user == current_user) | (News.is_private != True)).all()
+    else:
+        all_news = db_sess.query(News).filter(News.is_private != True).all()
+    # print(all_news)
+    return render_template('news.html',
+                           title='Новости', news=all_news)
+
+@app.route('/newsjob', methods=['POST', 'GET'])
+@login_required
+def add_news():
+    form = NewsForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        news = News()
+        news.title = form.title.data
+        news.content = form.content.data
+        news.is_private = form.is_private.data
+        current_user.news.append(news)
+        db_sess.merge(current_user)
+        db_sess.commit()
+        return redirect('/news')
+    return render_template('newsjob.html', title='Добавление новости', form=form)
+
+@app.route('/newsjob/<int:id_num>', methods=['POST', 'GET'])
+@login_required
+def edit_news(id_num):
+    form = NewsForm()
+    if request.method == 'GET':
+        db_sess = db_session.create_session()
+        news = db_sess.query(News).filter(
+            News.id == id_num, News.user == current_user
+        ).first()
+        if news:
+            news.title.data = form.title
+            news.content.data = form.content
+            news.is_private.data = form.is_private
+        else:
+            abort(404)
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        news = db_sess.query(News).filter(
+            News.id == id_num, News.user == current_user
+        ).first()
+        if news:
+            form.title = news.title.data
+            form.content = news.content.data
+            form.is_private = news.is_private.data
+            db_sess.commit()
+            return redirect('/news')
+    else:
+        abort(404)
+    return render_template('newsjob.html', title='Редактирование новости', form=form)
+
+@app.route('/newsdel/<int:news_id>')
+@login_required
+def news_delete(news_id):
+    db_sess = db_session.create_session()
+    news = db_sess.query(News).filter(
+        News.id == news_id, News.user == current_user
+    ).first()
+
+    if news:
+        db_sess.delete(news)
+        db_sess.commit()
+    else:
+        abort(404)
+    return redirect('/news')
 
 if __name__ == '__main__':
     db_session.global_init('db/news.sqlite')
